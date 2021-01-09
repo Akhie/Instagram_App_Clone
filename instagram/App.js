@@ -3,6 +3,13 @@ import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 
 import * as firebase from 'firebase'
+
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import rootReducer from './redux/reducers'
+import thunk from 'redux-thunk'
+const store = createStore(rootReducer, applyMiddleware(thunk))
+
 const firebaseConfig = {
   apiKey: "AIzaSyCneppyGgHYHbYxy9XqB744_TLgiBIpGbk",
   authDomain: "instagram-dev-895c4.firebaseapp.com",
@@ -23,6 +30,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LandingScreen from './components/auth/Landing';
 import RegisterScreen from './components/auth/Register';
 import LoginScreen from './components/auth/Login';
+import MainScreen from './components/Main';
 
 
 const Stack = createStackNavigator();
@@ -32,7 +40,8 @@ export class App extends Component {
     super(props);
 
     this.state = {
-      loaded: 'false'
+      loaded: 'false',
+      loggedIn: 'false'
     }
   }
 
@@ -77,9 +86,9 @@ export class App extends Component {
     }
     else{
       return(
-        <View>
-          <Text style={{flex:1 , justifyContent: 'center' , color: 'blue'}}> Already loggedIn ..Enjoy.. </Text>
-        </View>
+        <Provider store={store}>
+          <MainScreen />
+        </Provider>  
       )
     }
   }
