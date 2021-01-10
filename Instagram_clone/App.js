@@ -20,8 +20,8 @@ const firebaseConfig = {
   measurementId: "G-D674TGFMFB"
 };
 
-if(firebase.apps.length === 0){
-  firebase.initializeApp(firebaseConfig)
+if(firebase.apps.length===0){
+  firebase.initializeApp(firebaseConfig);
 }
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,15 +50,15 @@ export class App extends Component {
       if(!user){
         this.setState({
           loaded: true,
-          loggedIn:false,
+          loggedIn: false
         })
       }
       else{
         this.setState({
           loaded: true,
-          loggedIn: true,
+          loggedIn: true
         })
-      }
+      }  
     })
   }
 
