@@ -21,7 +21,7 @@ export function fetchUser(){
                         console.log("No User Found");
                     }    
                 })
-
+                
             }
             else{
                 console.log('does not exist')
