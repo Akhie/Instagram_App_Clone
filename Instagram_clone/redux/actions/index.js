@@ -1,31 +1,37 @@
-import { USER_STATE_CHANGE } from '../constants/index'
+import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE } from '../constants/index'
 import * as firebase from 'firebase'
 require("firebase/firestore")
 
 export function fetchUser(){
 
     return((dispatch) => {
-        firebase.firestore().collection("users").doc("75cpW2kxNHUzVuFr4h19XjddBUY2").get()
+        firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get()
         .then((snapshot) => {
             if(snapshot.exists){
-                console.log("dummy data: " + snapshot.data())
-
-                // actual Required Code    
-                firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).get()
-                .then((result)=>{
-                    if(result.exists){
-                        console.log(result.data())
-                        dispatch({type: USER_STATE_CHANGE, currentUser: result.data()})
-                    }
-                    else{
-                        console.log("No User Found");
-                    }    
-                })
-                
+                dispatch({type: USER_STATE_CHANGE, currentUser: snapshot.data()})
             }
             else{
                 console.log('does not exist')
             }
+        })
+    })
+        
+}
+
+export function fetchUserPosts(){
+
+    return((dispatch) => {
+        firebase.firestore().collection("posts").doc(firebase.auth().currentUser.uid)
+        .collection("userPosts")
+        .orderBy("creation", "asc") // to get the latest posts first
+        .get()
+        .then((snapshot) => {
+            let posts = snapshot.docs.map(doc => {
+                const data = doc.data();
+                const id = doc.id;
+                return{ id, ...data }
+            })
+            dispatch({type: USER_POSTS_STATE_CHANGE, posts: posts })
         })
     })
         

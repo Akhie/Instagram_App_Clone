@@ -20,9 +20,8 @@ const firebaseConfig = {
   measurementId: "G-D674TGFMFB"
 };
 
-if(firebase.apps.length===0){
-  firebase.initializeApp(firebaseConfig);
-}
+firebase.initializeApp(firebaseConfig);
+
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -42,8 +41,8 @@ export class App extends Component {
     super(props);
 
     this.state = {
-      loaded: 'false',
-      loggedIn: 'false'
+      loaded: false,
+      loggedIn: false
     }
   }
 
@@ -73,9 +72,9 @@ export class App extends Component {
           <Text style={{flex:1 , justifyContent: 'center' , color: 'blue'}}> Loading... </Text>
         </View>
       )
-    }
+    } 
 
-    if(!loggedIn){
+    else if(!loggedIn){
       return (
         <NavigationContainer>
         <Stack.Navigator InitialRouteName="Landing">
