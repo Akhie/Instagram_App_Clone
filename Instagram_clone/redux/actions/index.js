@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import { USER_STATE_CHANGE } from '../constants/index'
 import * as firebase from 'firebase'
+require("firebase/firestore")
 
 export function fetchUser(){
 
