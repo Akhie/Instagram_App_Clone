@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native'
 
 import firebase from 'firebase';
-require('firebase/firestore');
+require("firebase/firestore");
 
 export default function Search(props) {
     const [users, setUsers] = useState([]);
@@ -15,7 +15,7 @@ export default function Search(props) {
         .then((snapshot) => {
             let users = snapshot.docs.map(doc => {
                 const data = doc.data();
-                const id = doc.id;            
+                const id = doc.id;          
                 return { id, ...data }
             });    
             setUsers(users);

@@ -76,7 +76,7 @@ export class App extends Component {
       )
     } 
 
-    else if(!loggedIn){
+    if(!loggedIn){
       return (
         <NavigationContainer>
         <Stack.Navigator InitialRouteName="Landing">
