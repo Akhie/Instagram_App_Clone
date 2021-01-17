@@ -13,7 +13,9 @@ export default function Comment(props) {
     useEffect(() => {
 
         if(props.route.params.postId !== postId) {
-            firebase.firestore().collection("posts").doc(props.route.params.uid).collection("usersPosts").doc(props.route.params.postId)
+            firebase.firestore()
+            .collection("posts").doc(props.route.params.uid)
+            .collection("userPosts").doc(props.route.params.postId)
             .collection("Comments").get()
             .then((snapshot) => {
                 let comments = snapshot.docs.map(doc => {
@@ -28,6 +30,16 @@ export default function Comment(props) {
 
     }, [props.route.params.postId])
 
+    const onCommentSend = () => {
+        firebase.firestore()
+        .collection("posts").doc(props.route.params.uid)
+        .collection("userPosts").doc(props.route.params.postId)
+        .collection("Comments").add({
+            creater: firebase.auth().currentUser.uid,
+            text
+        })
+    }
+
     return (
         <View>
             <FlatList 
@@ -40,6 +52,17 @@ export default function Comment(props) {
                     </View>
                 )}
             />
+
+            <View>
+                <TextInput
+                    placeholder='comment...'
+                    onChangeText={(text) => setText(text)}
+                />
+                <Button 
+                    onPress={() => onCommentSend()}
+                    title="Send"
+                />
+            </View>
         </View>
     )
 }
