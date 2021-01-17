@@ -1,6 +1,12 @@
-import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_POSTS_STATE_CHANGE } from '../constants/index'
+import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE, USERS_POSTS_STATE_CHANGE, CLEAR_DATA } from '../constants/index'
 import firebase from 'firebase';
 require('firebase/firestore');
+
+export function clearData() {
+    return ((dispatch) => {
+        dispatch({type: CLEAR_DATA })
+    })
+}
 
 export function fetchUser(){
 
@@ -69,7 +75,7 @@ export function fetchUsersData(uid){
                     user.uid = snapshot.id;
 
                     dispatch({type: USERS_DATA_STATE_CHANGE, user })
-                    dispatch(fetchUsersFollowingPosts(user.id))
+                    dispatch(fetchUsersFollowingPosts(uid))
                 }
                 else{
                     console.log('User not exist')
@@ -97,9 +103,7 @@ export function fetchUsersFollowingPosts(uid){
                 const id = doc.id;
                 return{ id, ...data, user }
             })
-            console.log(posts)
             dispatch({type: USERS_POSTS_STATE_CHANGE, posts, uid });
-            console.log(getState())
         })
     })
         

@@ -22,6 +22,7 @@ function Feed(props) {
             })
 
             setPosts(posts);
+            console.log(posts)
         }
 
     }, [props.usersLoaded])
@@ -36,7 +37,7 @@ function Feed(props) {
                     renderItem={({item}) => (
 
                         <View style={styles.containerImage}>
-                            <Text style={styles.container}>{item.user.name}</Text>
+                            <Text style={styles.container}>{item.user.name} </Text>
                             <Image
                                 style={styles.image}
                                 source={{uri: item.DownloadURL}}
