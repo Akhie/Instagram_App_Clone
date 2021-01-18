@@ -16,8 +16,22 @@ function Feed(props) {
 
             setPosts(props.feed);
         }
-        
+
     }, [props.usersFollowingLoaded, props.feed])
+
+    const onLikePress = (userId, postId) => {
+        firebase.firestore().collection("posts").doc(userId)
+        .collection("userPosts").doc(postId)
+        .collection("likes").doc(firebase.auth().currentUser.uid)
+        .set({})
+    }
+
+    const onDislikePress = (userId, postId) => {
+        firebase.firestore().collection("posts").doc(userId)
+        .collection("userPosts").doc(postId)
+        .collection("likes").doc(firebase.auth().currentUser.uid)
+        .delete()
+    }
 
     return (
         <View style={styles.container}>
@@ -34,6 +48,20 @@ function Feed(props) {
                                 style={styles.image}
                                 source={{uri: item.DownloadURL}}
                             />
+                            { item.currentUserLike ? 
+                                (
+                                    <Button 
+                                        title="Dislike"
+                                        onPress={() => onDislikePress(item.user.uid, item.id)}
+                                    />
+                                ) : (
+                                    <Button 
+                                        title="Like"
+                                        onPress={() => onLikePress(item.user.uid, item.id)}
+                                    />
+                                )
+
+                            }
                             <Text
                                 onPress={() => props.navigation.navigate('Comment', 
                                 { postId: item.id, uid: item.user.uid })
